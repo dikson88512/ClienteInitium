@@ -2,13 +2,7 @@
 
 $(document).ready(function () {
 
-    //$("#clienteCola").on("click", function (e) {
-    //    e.stopPropagation();
-    //    e.preventDefault();
-
-    //    //alert("");
-
-    //});
+   
     $("#txtGuardar").on("click", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -36,7 +30,14 @@ $(document).ready(function () {
             dataType: 'json',
             async: false
         }).done(function (data) {
+            debugger
+            if (data == 1) {
+                alert("Cliente Registrado satisfactoriamente");
+            }
+            else {
+                alert("Error Registrando el Cliente");
 
+            }
            
         }).fail(function () {
             //muestraMensaje(nombreModulo, "error", "Error, comuníquese con el administrador.");
