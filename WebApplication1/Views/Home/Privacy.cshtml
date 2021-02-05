@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Clientes Atendidos en Cola";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous">
+
+</script>
+
+
+<table id="tablaCliente" class="table table-dark">
+    <thead>
+        <th>Id Cliente</th>
+        <th>Nombre Cliente</th>
+
+    </thead>
+    <tbody>
+
+
+
+    </tbody>
+
+</table>
+
+<script>
+
+    $(document).ready(function () {
+
+        ObtenerRegistroCliente();
+
+        function ObtenerRegistroCliente() {
+        
+            var urlInsertar = document.baseURI + '/api/Home/ObtenerTodosClienteAtendidos';
+        
+            $.ajax({
+                method: 'GET',
+                url: urlInsertar,
+                dataType: 'json',
+                async: false
+            }).done(function (data) {
+                debugger
+                var i = 0;
+                $.each(data.datos, function (idx, val) {
+                    debugger
+                    $('#tablaCliente').append('<tr><td>'+ val.idCliente +'</td><td>' + val.nombreCliente + '</td></tr>');
+                    i++;
+
+
+                });
+                            
+            }).fail(function () {
+                //muestraMensaje(nombreModulo, "error", "Error, comuníquese con el administrador.");
+            });
+
+
+        }
+
+   
+   
+   
+
+});
+
+</script>
