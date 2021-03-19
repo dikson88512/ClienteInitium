@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PCliente.BL.Models;
-using PCliente.DAL.Entities2;
+using PCliente.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,9 +15,9 @@ namespace PCliente.BL
 {
     public class ClienteServices: IClienteServices
     {
-        private readonly DBContext DbContextCliente;
+        private readonly DbContextCliente DbContextCliente;
         private string Conexion;
-        public ClienteServices(DBContext _DbContextCliente, IConfiguration configuration)
+        public ClienteServices(DbContextCliente _DbContextCliente, IConfiguration configuration)
         {
             this.DbContextCliente = _DbContextCliente;
             Conexion = configuration.GetConnectionString("DefaultConnection");
@@ -43,11 +43,8 @@ namespace PCliente.BL
                         NombreCliente = cliente.nombreCliente
 
                     };
-                //Antes de Insertar se debe verificar que el id, no exista
-                //Caso contrario, debe buscar si lo esta atendiendo
-                //sino lo esta atendiendo, se incluye 
-                //en la tabla Cliente_Cola
-
+                //Antes de Insertar se debe verificar que el id, no exista. Caso contrario, debe buscar si lo esta atendiendo
+                //sino lo esta atendiendo, se incluye en la tabla Cliente_Cola
                 //2 es NuevoCliente,1 yaexiste
                 string  resultado = await CheckExistenciaCliente(cliente.idCliente);
                 if (resultado == "2")
@@ -77,12 +74,26 @@ namespace PCliente.BL
             }
         }
 
-        public async Task UpdateCliente(ClienteDetailModel cliente)
+        public async Task<string> UpdateCliente(ClienteDetailModel cliente)
         {
-            var entity = await DbContextCliente.ClienteColas.FirstOrDefaultAsync(s=> s.IdCliente == cliente.idCliente);
+            try
+            {
 
-            entity.EstadoCliente = "CE";
-            await DbContextCliente.SaveChangesAsync();
+                var entity = await DbContextCliente.ClienteColas.FirstOrDefaultAsync(s => s.IdCliente == cliente.idCliente);
+                entity.EstadoCliente = "PE";
+                DbContextCliente.Entry(entity).CurrentValues.SetValues(entity);
+
+                //DbContextCliente.ClienteColas.Attach(entity);
+                //DbContextCliente.Entry(entity).Property(r => r.EstadoCliente).IsModified = true;
+
+                int respuesta =  await DbContextCliente.SaveChangesAsync();
+                return "1";
+            }
+            catch (Exception ex)
+            {
+
+                return "2";
+            }
         }
 
         public async Task DeleteCliente(string ClienteId)
@@ -105,7 +116,7 @@ namespace PCliente.BL
             {
                 //Verifico una cola Libre
                 //
-                using (var ctx = new DBContext())
+                using (var ctx = new DbContextCliente())
                 {
                     var studentList = ctx.ClienteColas.Where(s => s.EstadoCliente == "CV").ToList();
                     var d="";
@@ -129,7 +140,7 @@ namespace PCliente.BL
         {
             try
             {
-                using (var ctx = new DBContext())
+                using (var ctx = new DbContextCliente())
                 {
                     foreach (dynamic item in data)
                     {
@@ -169,7 +180,7 @@ namespace PCliente.BL
             try
             {
                 List<Cliente> cliente= new List<Cliente>();
-                using (var ctx = new DBContext())
+                using (var ctx = new DbContextCliente())
                 {
                     cliente = await ctx.Clientes.Where(s => s.IdCliente == idCliente).ToListAsync();
                    

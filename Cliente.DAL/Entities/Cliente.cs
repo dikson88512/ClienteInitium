@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace PCliente.DAL.Entities2
+namespace PCliente.DAL.Entities
 {
     public partial class Cliente
     {

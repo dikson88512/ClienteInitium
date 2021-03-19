@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PCliente.BL;
-using PCliente.DAL.Entities2;
+using PCliente.DAL.Entities;
 
 namespace WebApplication1
 {
@@ -31,7 +31,7 @@ namespace WebApplication1
             //    .Where(c => c.Name.EndsWith("Service")) // <-- Change "Persistence" to "Service"
             //    .AsPublicImplementedInterfaces(ServiceLifetime.Scoped);
             //services.AddSingleton<IHttpService, HttpService>();
-            services.AddDbContext<DBContext>(options =>
+            services.AddDbContext<DbContextCliente>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             //services.AddHttpClient();

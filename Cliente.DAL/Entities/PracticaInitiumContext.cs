@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace PCliente.DAL.Entities2
+namespace PCliente.DAL.Entities
 {
-    public partial class DBContext : DbContext
+    public partial class DbContextCliente : DbContext
     {
-        public DBContext()
+        public DbContextCliente()
         {
         }
 
-        public DBContext(DbContextOptions<DBContext> options)
+        public DbContextCliente(DbContextOptions<DbContextCliente> options)
             : base(options)
         {
         }
@@ -25,7 +25,7 @@ namespace PCliente.DAL.Entities2
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=DESKTOP-BHROMAP;Initial Catalog=PracticaInitium;User ID=sa;Password=sadikson");
             }
         }
@@ -61,7 +61,9 @@ namespace PCliente.DAL.Entities2
 
             modelBuilder.Entity<ClienteCola>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.IdCliente, e.IdCola })
+                    .HasName("PK_ClienteCola")
+                    .IsClustered(false);
 
                 entity.ToTable("Cliente_Cola");
 
@@ -69,19 +71,18 @@ namespace PCliente.DAL.Entities2
 
                 entity.HasIndex(e => e.IdCliente, "IX_Cliente_Cola");
 
-                entity.Property(e => e.EstadoCliente)
-                    .IsRequired()
-                    .HasMaxLength(2)
-                    .IsUnicode(false)
-                    .HasComment("EstadoCliente valores CE Cliente en espera, CV Cliente en Ventanilla\r\nCP Cliente Procesado");
-
                 entity.Property(e => e.IdCliente)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("idCliente");
 
                 entity.Property(e => e.IdCola).HasColumnName("idCola");
+
+                entity.Property(e => e.EstadoCliente)
+                    .IsRequired()
+                    .HasMaxLength(2)
+                    .IsUnicode(false)
+                    .HasComment("EstadoCliente valores CE Cliente en espera, CV Cliente en Ventanilla\r\nCP Cliente Procesado");
 
                 entity.Property(e => e.TiempoFin).HasColumnType("datetime");
 

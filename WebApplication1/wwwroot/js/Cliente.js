@@ -18,7 +18,8 @@ $(document).ready(function () {
             nombreCliente: $('#txtNombreCliente').val()
         };
 
-        var urlInsertar = document.baseURI + 'api/Home/InsertClienteFrontEnd';
+        //var urlInsertar = document.baseURI + 'api/Home/InsertClienteFrontEnd';
+        var urlInsertar = document.baseURI + 'api/Home/UpdateCliente';
         
         $.ajax({
             method: 'POST',

@@ -1,5 +1,5 @@
 ﻿using PCliente.BL.Models;
-using PCliente.DAL.Entities2;
+using PCliente.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +11,12 @@ namespace PCliente.BL
     {
         Task<List<Cliente>> GetAllCliente();
         Task<string> InsertCliente(ClienteDetailModel cliente);
-        Task UpdateCliente(ClienteDetailModel cliente);
+        Task<string> UpdateCliente(ClienteDetailModel cliente);
         Task DeleteCliente(string ClienteId);
 
         Task<string> checkTime();
 
         Task<string> EjecutarProcesoAtencionCliente(string idCliente);
+        
     }
 }

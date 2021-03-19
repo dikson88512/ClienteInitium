@@ -30,8 +30,8 @@ namespace WebApplication1.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-
-          
+           
+           
             return View();
         }
 
@@ -85,6 +85,25 @@ namespace WebApplication1.Controllers
 
         }
 
+        [HttpPost()]
+        [Route("api/Home/UpdateCliente")]
+        public async Task<string> UpdateCliente(ClienteDetailModel cliente)
+        {
+            try
+            {
+                ClienteDetailModel Cliente = new ClienteDetailModel();
+                Cliente.idCliente = "4";
+                var resultado = await _ClienteServices.UpdateCliente(Cliente);
+                return resultado;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
 
         #region VerificarCadaMinuto
         [HttpPost()]
