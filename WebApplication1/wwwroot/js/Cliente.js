@@ -17,7 +17,7 @@ $(document).ready(function () {
             idCliente: $('#txtIdCliente').val(),
             nombreCliente: $('#txtNombreCliente').val()
         };
-
+        //Comentario DIKSON CALDERON
         //var urlInsertar = document.baseURI + 'api/Home/InsertClienteFrontEnd';
         var urlInsertar = document.baseURI + 'api/Home/UpdateCliente';
         
